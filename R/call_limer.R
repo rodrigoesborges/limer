@@ -17,31 +17,37 @@
 #' }
 #' @export
 
-call_limer <- function(method, params = list(), ssl_verifypeer = FALSE,  ...) {
-  if (!is.list(params)) {
-    stop("params must be a list.")
+call_limer <-
+  function(method,
+           params = list(),
+           ssl_verifypeer = FALSE,
+           ...) {
+    if (!is.list(params)) {
+      stop("params must be a list.")
+    }
+
+    if (!exists("session_key", envir = session_cache)) {
+      stop("You need to get a session key first. Run get_session_key().")
+    }
+
+    key.list <- list(sSessionKey = session_cache$session_key)
+    params.full <- c(key.list, params)
+
+    body.json <- list(method = method,
+                      # This seems to not matter, but the API call breaks without it,
+                      # so just pass nothing. ¯\_(ツ)_/¯
+                      id = " ",
+                      params = params.full)
+
+    r <- httr::POST(
+      getOption('lime_api'),
+      httr::content_type_json(),
+      body = jsonlite::toJSON(body.json, auto_unbox = TRUE),
+      httr::config(ssl_verifypeer = ssl_verifypeer),
+      ...
+    )
+
+
+    return(jsonlite::parse_json(httr::content(r, as = 'text', encoding = "utf-8"))$result)   # incorporated fix by petrbouchal
+
   }
-
-  if (!exists("session_key", envir = session_cache)) {
-    stop("You need to get a session key first. Run get_session_key().")
-  }
-
-  key.list <- list(sSessionKey = session_cache$session_key)
-  params.full <- c(key.list, params)
-
-  body.json <- list(method = method,
-                    # This seems to not matter, but the API call breaks without it,
-                    # so just pass nothing. ¯\_(ツ)_/¯
-                    id = " ",
-                    params = params.full)
-
-  r <- httr::POST(
-    getOption('lime_api'),
-    httr::content_type_json(),
-    body = jsonlite::toJSON(body.json, auto_unbox = TRUE),
-    httr::config(ssl_verifypeer = ssl_verifypeer),
-    ...
-  )
-
-  return(jsonlite::fromJSON(httr::content(r, as = 'text', encoding = "utf-8"))$result)   # incorporated fix by petrbouchal
-}
