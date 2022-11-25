@@ -1,5 +1,12 @@
 <?php
      /**
+    This fix must be added to the file  
+    application/helpers/remotecontrol/remotecontrol_handle.php.
+      * */
+
+
+
+     /**
       * RPC Routine to export a survey archive (LSA).
       *
       * @access public
