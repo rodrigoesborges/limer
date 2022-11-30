@@ -72,10 +72,25 @@ release_session_key()
 
 ## Roadmap
 
-For now, the only special thing this package does is provide `get_responses()`. In the future I hope to add convenience functions for creating new surveys, managing responses, and running other common API operations. Regardless, all API functions are accessible with `call_limer(method = "whatever")`.
+For now, the only special thing this package does is provide `get_responses()`. 
+In the future I hope to add convenience functions for creating new surveys, 
+managing responses, and running other common API operations. Regardless, all 
+API functions are accessible with `call_limer(method = "whatever")`.
 
-`get_responses()` currently defaults to CSV, but the API can also return JSON, which might actually be better for transferring data over the internet. I'll eventually add JSON support.
+`get_responses()` currently defaults to CSV, but the API can also return JSON, 
+which might actually be better for transferring data over the internet. I'll 
+eventually add JSON support.
 
+### Further development  
+
+In order to write further functions, the following notes must be observed:  
+
+* usually the meta function call_limer() is called, in which a current session 
+key is created. This means that __no session key__ must be passed to the function 
+as a parameter.  
+* The parameters to the API are passed as a list in call_limer() in exactly the 
+order as they are stored in the [API documentation](https://api.limesurvey.org/classes/remotecontrol_handle.html) 
+or in the [source code of the API](https://github.com/LimeSurvey/LimeSurvey/blob/master/application/helpers/remotecontrol/remotecontrol_handle.php. Otherwise there will be wrong assignments!  
 
 ## Installation
 

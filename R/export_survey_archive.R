@@ -4,6 +4,7 @@
 #'
 #' @param iSurveyID \dots
 #' @param filename \dots
+#' @param verbose boolean, Giving out logging info
 #' @export
 #' @examples \dontrun{
 #' export_survey_archive(12345)
@@ -16,19 +17,21 @@
 #'
 #' @references https://bugs.limesurvey.org/view.php?id=17747
 
-export_survey_archive <- function(iSurveyID, filename = NULL) {
+export_survey_archive <-
+  function(iSurveyID,
+           filename = NULL,
+           verbose = FALSE) {
+    x <- call_limer("export_survey_archive",
+                    params = list("iSurveyID_org" = iSurveyID))
 
-  x <- call_limer("export_survey_archive",
-                                   params = list("iSurveyID_org" = iSurveyID))
+    survey_data_raw <- rawToChar(base64enc::base64decode(x))
 
-  survey_data_raw <- rawToChar(base64enc::base64decode(x))
-
-  if (is.null(filename))
-    filename <- glue::glue("limesurvey_survey_{iSurveyID}.lsa")
+    if (is.null(filename))
+      filename <- glue::glue("limesurvey_survey_{iSurveyID}.lsa")
 
 
     writeLines(survey_data_raw, filename)
+    if (verbose)
+      message(filename, " saved!")
 
- message(filename, " saved!")
-
-}
+  }

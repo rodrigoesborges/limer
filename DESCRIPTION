@@ -11,9 +11,12 @@ Description: Provides access to LimeSurvey's RemoteControl 2 API, allowing you
   to collect and analyze survey data in a simple, reproducible workflow.  
 Imports:
     base64enc,
+    dplyr,
     glue,
     httr,
-    jsonlite
+    jsonlite,
+    magrittr,
+    xml2
 License: MIT + file LICENSE
 LazyData: TRUE
 URL: https://github.com/cloudyr/limer

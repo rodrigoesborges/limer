@@ -1,0 +1,52 @@
+
+#' import_survey_structure
+#'
+#' Import survey file in a known format into Limesurvey and create an inactive
+#' survey with it.
+#'
+#' @param sImportData string, path to file
+#' @param sNewSurveyName string, The optional new name of the survey
+#' @param DestSurveyID integer This is the new ID of the survey - if already
+#' used a random one will be taken instead
+#' @param verbose boolean, Giving out logging info
+#'
+#' @export
+#' @references https://api.limesurvey.org/classes/remotecontrol_handle.html#method_import_survey
+
+import_survey_structure <- function(sImportData, sNewSurveyName = NULL, DestSurveyID = NULL, verbose = FALSE){
+
+  # TODO
+  # sImportData fileextension als Parameter übergeben
+  file_data <- base64enc::base64encode(sImportData)
+
+
+  if (is.null(DestSurveyID) & grepl("lss$", sImportData)) {
+    DestSurveyID <- xml2::read_xml(sImportData) %>%
+      xml2::xml_find_all(xpath = "/document/groups/rows/row/sid") %>%
+      xml2::xml_text()
+
+  }
+
+  if (is.null(sNewSurveyName) & grepl("lss$", sImportData)) {
+    sNewSurveyName <- xml2::read_xml(sImportData) %>%
+      xml2::xml_find_all(xpath = "//surveyls_title") %>%
+      xml2::xml_text()
+  }
+
+  msg <- call_limer("import_survey",
+                    params = list("sImportData" = file_data,
+                                  "sImportDataType" = "lss",
+                                  "sNewSurveyName" = sNewSurveyName,
+                                  "DestSurveyID" = DestSurveyID
+
+                    ))
+
+  # Limesurvey ids are numeric
+  if (!is.na(as.numeric(msg))) {
+    if (verbose)
+      message("Survey with id \u00b4", msg, "\u00b4 from ",sImportData," successfully imported")
+  } else {
+    stop(msg)
+  }
+}
+
