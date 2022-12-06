@@ -41,9 +41,12 @@ import_survey_structure <- function(sImportData, sNewSurveyName = NULL, DestSurv
 
                     ))
 
+  if ((msg != DestSurveyID) & verbose)
+    warning(glue::glue("The Id of the survey already exists. The survey gets the new ID {msg}"), call. = F)
+
   # Limesurvey ids are numeric
   if (!is.na(as.numeric(msg))) {
-    if (verbose)
+    if ((msg == DestSurveyID) & verbose)
       message("Survey with id \u00b4", msg, "\u00b4 from ",sImportData," successfully imported")
   } else {
     stop(msg)
