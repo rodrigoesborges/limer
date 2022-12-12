@@ -1,6 +1,6 @@
 <?php
      /**
-    This fix must be added to the file  
+    This fix must be added to the file
     application/helpers/remotecontrol/remotecontrol_handle.php.
       * */
 
@@ -145,5 +145,48 @@
              return base64_encode($sResult);
          }
      }
+
+
+    /**
+     * Obtain column ids of a surveys response table
+     *
+     * @access public
+     *
+     * @param string  $sSessionKey  Auth credentials
+     * @param int     $iSurveyID    ID of the Survey
+     *
+     * @return array On success: array containing column names of response table
+     *               On failure: array with error information
+     */
+
+
+    public function get_response_table_columns($sSessionKey, $iSurveyID){
+        $iSurveyID = (int) $iSurveyID;
+        $survey = Survey::model()->findByPk($iSurveyID);
+
+        if ($this->_checkSessionKey($sSessionKey)) {
+
+          if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) {
+              return array('status' => 'No permission or survey does not exists');
+          }
+
+          if (!tableExists($survey-> responsesTableName)) {
+                return array('status' => 'No Data, survey table does not exist (propably yet not activated).');
+            }
+
+          if (empty($sLanguageCode)) {
+              $sLanguageCode = $survey->language;
+          }
+          if (is_null($aFields)) {
+              $aFields = array_keys(createFieldMap($survey, 'full', true, false, $sLanguageCode));
+              return array($aFields);
+          }
+
+            return array('status' => "OK");
+        } else {
+                    return array('status' => self::INVALID_SESSION_KEY);
+        }
+    }
+
 
 ?>
