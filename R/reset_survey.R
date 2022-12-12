@@ -20,11 +20,10 @@ reset_survey <- function(iSurveyID, sImportData = NULL, sNewSurveyName = NULL, v
     sImportData <- "tmp.lss"
   }
 
-  if (is.null(sNewSurveyName)) {
-    sNewSurveyName <- xml2::read_xml("tmp.lss") %>%
-      xml2::xml_find_all(xpath = "//surveyls_title") %>%
-      xml2::xml_text()
-  }
+  if (!file.exists(sImportData))
+    stop(glue::glue(
+      "Could not find the structure file {sImportData} in this location"
+    ), call. = F)
 
   delete_survey(iSurveyID, verbose = verbose)
 

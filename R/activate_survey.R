@@ -21,7 +21,7 @@ activate_survey <- function(iSurveyID, verbose = FALSE) {
       message("Survey with id \u00b4",
               iSurveyID,
               "\u00b4 successfully activated!")
-    return()
+
   } else if (msg == "No permission") {
     stop(
       glue::glue(
@@ -31,7 +31,7 @@ activate_survey <- function(iSurveyID, verbose = FALSE) {
     )
   } else {
     if (verbose)
-      message(msg)
+      message(msg %>% unlist())
   }
 
 
