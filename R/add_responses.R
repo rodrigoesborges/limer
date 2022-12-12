@@ -1,0 +1,46 @@
+
+
+#' add_responses
+#'
+#' Inserts one or more answers into an answer table of a survey
+#'
+#' @param iSurveyID integer, ID of the Survey to insert responses
+#' @param verbose boolean, Giving out logging info
+#' @param data dataframe, The actual response(s)
+#'
+#' @export
+#'
+#' @references https://api.limesurvey.org/classes/remotecontrol_handle.html#method_add_response
+add_responses <- function(iSurveyID, data, verbose = FALSE) {
+  if (!inherits(data, "data.frame"))
+    stop("Data must be of type data.frame", call. = F)
+
+  survey_is_active <-
+    get_survey_list(sid = F) %>% dplyr::filter(.data$sid == iSurveyID) %>% dplyr::pull(.data$active) == "Y"
+
+  if (!survey_is_active)
+    stop(
+      "The survey is not active at the moment, therefore no answers can be imported. Please use `activate_survey()` to activate the survey.",
+      call. = FALSE
+    )
+
+  res <-
+    apply(
+      data,
+      MARGIN = 1,
+      FUN = function(x) {
+        call_limer("add_response",
+                   params = list("iSurveyID" = iSurveyID,
+                                 "aResponseData" = as.list(x)))
+      }
+    )
+
+  res <- c("1", "22")
+  res[[1]] == "No survey response table"
+
+  if ((length(res) == nrow(data)) &
+      verbose & all(!is.na(res %>% as.numeric()))) {
+    message("Responses successfully imported.")
+  }
+
+}
