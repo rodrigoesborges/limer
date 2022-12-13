@@ -178,7 +178,8 @@
               $sLanguageCode = $survey->language;
           }
           if (is_null($aFields)) {
-              $aFields = array_keys(createFieldMap($survey, 'full', true, false, $sLanguageCode));
+
+          $aFields = array_keys(createFieldMap($survey,  $style = 'full', $force_refresh = true, $questionid = false, $sLanguage = $sLanguageCode));
               return array($aFields);
           }
 
