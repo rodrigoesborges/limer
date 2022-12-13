@@ -26,7 +26,7 @@ import_survey_structure <-
       ), call. = F)
 
     if (is.null(sNewSurveyName)) {
-      sNewSurveyName <- xml2::read_xml("tmp.lss") %>%
+      sNewSurveyName <- xml2::read_xml(sImportData) %>%
         xml2::xml_find_all(xpath = "//surveyls_title") %>%
         xml2::xml_text()
     }
