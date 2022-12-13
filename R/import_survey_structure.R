@@ -27,7 +27,7 @@ import_survey_structure <-
 
     if (is.null(sNewSurveyName)) {
       sNewSurveyName <- xml2::read_xml(sImportData) %>%
-        xml2::xml_find_all(xpath = "//surveyls_title") %>%
+        xml2::xml_find_first(xpath = "//surveyls_title") %>%
         xml2::xml_text()
     }
 
@@ -40,7 +40,6 @@ import_survey_structure <-
       DestSurveyID <- xml2::read_xml(sImportData) %>%
         xml2::xml_find_all(xpath = "/document/groups/rows/row/sid") %>%
         xml2::xml_text()
-
     }
 
     if (is.null(sNewSurveyName) & grepl("lss$", sImportData)) {
