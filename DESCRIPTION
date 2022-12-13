@@ -17,6 +17,7 @@ Imports:
     httr,
     jsonlite,
     magrittr,
+    rlang,
     xml2
 License: MIT + file LICENSE
 LazyData: TRUE

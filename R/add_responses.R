@@ -7,7 +7,7 @@
 #' @param iSurveyID integer, ID of the Survey to insert responses
 #' @param verbose boolean, Giving out logging info
 #' @param data dataframe, The actual response(s)
-#'
+#' @importFrom rlang .data
 #' @export
 #'
 #' @references https://api.limesurvey.org/classes/remotecontrol_handle.html#method_add_response
