@@ -24,6 +24,15 @@ add_responses <- function(iSurveyID, data, verbose = FALSE) {
       call. = FALSE
     )
 
+  # delete the ID to avoid collisions due to duplications and automatic
+  # increments
+  if ("id" %in% colnames(data) %>% tolower()) {
+    data$id <- NULL
+    if (verbose)
+      warning("Column id was deleted to avoid collisions", call. = F)
+  }
+
+
   res <-
     apply(
       data,
