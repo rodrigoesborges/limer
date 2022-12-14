@@ -16,7 +16,7 @@ add_responses <- function(iSurveyID, data, verbose = FALSE) {
     stop("Data must be of type data.frame", call. = F)
 
   survey_is_active <-
-    get_survey_list(sid = F) %>% dplyr::filter(.data$sid == iSurveyID) %>% dplyr::pull(.data$active) == "Y"
+    limer::get_survey_list(sid = F) %>% dplyr::filter(.data$sid == iSurveyID) %>% dplyr::pull(.data$active) == "Y"
 
   if (!survey_is_active)
     stop(
@@ -28,24 +28,37 @@ add_responses <- function(iSurveyID, data, verbose = FALSE) {
   # increments
   if ("id" %in% colnames(data) %>% tolower()) {
     data$id <- NULL
+
     if (verbose)
       warning("Column id was deleted to avoid collisions", call. = F)
   }
 
+
+  # TODO
+  # Clarify what happens to "No response" in the coding. For the correct import,
+  # there must obviously be no NA for numeric values, as this will give an error
+  # A 0 is interpreted as "Not finished or not shown".
+  # https://manual.limesurvey.org/Import_responses#Reserved_names
+  # Maybe this has to be determined for each question type?
+
+  # data <- data %>%
+  #   dplyr::mutate_if(is.numeric, ~tidyr::replace_na(., 0))
 
   res <-
     apply(
       data,
       MARGIN = 1,
       FUN = function(x) {
-        call_limer("add_response",
-                   params = list("iSurveyID" = iSurveyID,
-                                 "aResponseData" = as.list(x)))
+        # remove NA Values and blanks
+        x <- x[!is.na(x)] %>% trimws()
+        x <- type.convert(as.list(x), as.is = TRUE)
+
+        limer::call_limer("add_response",
+                          params = list("iSurveyID" = iSurveyID,
+                                        "aResponseData" = x))
       }
     )
 
-  res <- c("1", "22")
-  res[[1]] == "No survey response table"
 
   if ((length(res) == nrow(data)) &
       verbose & all(!is.na(res %>% as.numeric()))) {
