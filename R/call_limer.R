@@ -47,7 +47,18 @@ call_limer <-
       ...
     )
 
+    response <- jsonlite::parse_json(httr::content(r, as = 'text', encoding = "utf-8"))$result
 
-    return(jsonlite::parse_json(httr::content(r, as = 'text', encoding = "utf-8"))$result)   # incorporated fix by petrbouchal
+    if (is.null(response)) {
+      err_msg <- jsonlite::parse_json(httr::content(r, as = 'text', encoding = 'utf-8'))$error
+      stop(err_msg, call. = F)
+
+    } else {
+      return(response)
+    }
+
+
+
+    # return(jsonlite::parse_json(httr::content(r, as = 'text', encoding = "utf-8"))$result)   # incorporated fix by petrbouchal
 
   }
