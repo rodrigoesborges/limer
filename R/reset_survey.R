@@ -1,18 +1,19 @@
 #' reset_survey
 #'
-#' Resets a survey to its original state by deleting the existing survey and
-#' re-importing it.
+#' Resets or copy a survey to its original state by deleting the existing
+#' survey and re-importing it.
 #'
 #' @param iSurveyID integer, Id of the survey that will be reset
 #' @param sImportData string, Path to the file. If not set, the previous survey
 #' is re-imported in its previous structure
-#' @param sNewSurveyName String, if not set the previous name is used
+#' @param sNewSurveyName String, if not set the previous name is used (optional)
+#' @param DestSurveyID string, Id of the copied survey (optional)
 #' @param verbose boolean, Giving out logging info
 #'
 #' @export
 #'
 
-reset_survey <- function(iSurveyID, sImportData = NULL, sNewSurveyName = NULL, verbose = FALSE) {
+reset_survey <- function(iSurveyID, sImportData = NULL, sNewSurveyName = NULL, DestSurveyID = NULL, verbose = FALSE) {
 
   if (is.null(sImportData)) {
 
@@ -25,9 +26,17 @@ reset_survey <- function(iSurveyID, sImportData = NULL, sNewSurveyName = NULL, v
       "Could not find the structure file {sImportData} in this location"
     ), call. = F)
 
-  delete_survey(iSurveyID, verbose = verbose)
 
-  import_survey_structure(sImportData, sNewSurveyName = sNewSurveyName, DestSurveyID = iSurveyID, verbose = verbose)
+
+  if (is.null(DestSurveyID)) {
+    DestSurveyID <- iSurveyID
+    delete_survey(iSurveyID, verbose = verbose)
+  } else {
+    if (verbose)
+      message(glue::glue("copy the survey to the new ID {DestSurveyID}"))
+  }
+
+  import_survey_structure(sImportData, sNewSurveyName = sNewSurveyName, DestSurveyID = DestSurveyID, verbose = verbose)
 
   # cleanup
   if (sImportData == "tmp.lss")
