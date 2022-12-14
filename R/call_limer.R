@@ -51,6 +51,7 @@ call_limer <-
 
     if (is.null(response)) {
       err_msg <- jsonlite::parse_json(httr::content(r, as = 'text', encoding = 'utf-8'))$error
+      err_msg <- ifelse(is.null(err_msg), glue::glue("{method} is a unknown function to remotecontrol"), err_msg)
       stop(err_msg, call. = F)
 
     } else {
