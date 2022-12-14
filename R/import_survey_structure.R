@@ -1,5 +1,6 @@
 
 
+
 #' import_survey_structure
 #'
 #' Import survey file in a known format into Limesurvey and create an inactive
@@ -19,11 +20,11 @@ import_survey_structure <-
            sNewSurveyName = NULL,
            DestSurveyID = NULL,
            verbose = FALSE) {
-
     if (!file.exists(sImportData))
       stop(glue::glue(
         "Could not find the structure file {sImportData} in this location"
-      ), call. = F)
+      ),
+      call. = F)
 
     if (is.null(sNewSurveyName)) {
       sNewSurveyName <- xml2::read_xml(sImportData) %>%
@@ -51,7 +52,8 @@ import_survey_structure <-
     # If the ID already exists delete the existing survey
     if (DestSurveyID %in% limer::get_survey_list()) {
       if (verbose)
-        warning("A survey with this ID already exists and has been deleted.", call. = F)
+        warning("A survey with this ID already exists and has been deleted.",
+                call. = F)
       delete_survey(DestSurveyID, verbose = verbose)
     }
 
@@ -77,11 +79,11 @@ import_survey_structure <-
     # Limesurvey ids are numeric
     if (!is.na(as.numeric(msg))) {
       if ((msg == DestSurveyID) & verbose)
-        message("Survey with id \u00b4",
-                msg,
-                "\u00b4 from ",
-                sImportData,
-                " successfully imported")
+          message("Survey with id \u00b4",
+                  msg,
+                  "\u00b4 from ",
+                  sImportData,
+                  " successfully imported")
     } else {
       stop(msg)
     }
