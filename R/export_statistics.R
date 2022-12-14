@@ -10,7 +10,7 @@
 #' (pdf|xls|html)
 #' @param filename string, path/name of the generateted File
 #' @param verbose boolean, Giving out logging info
-#'
+#' @param groupIDs integer, Group ID of question
 #' @return file
 #' @export
 #'
@@ -19,7 +19,7 @@
 #' https://bugs.limesurvey.org/view.php?id=18049
 #' https://raw.githubusercontent.com/LimeSurvey/LimeSurvey/a34c39ecf400599f25806db2e239053bc29af4ac/application/helpers/common_helper.php
 
-export_statistics <- function(iSurveyID, sLanguage = "de", graph = FALSE, docType = "pdf", filename = NULL, verbose = TRUE){
+export_statistics <- function(iSurveyID, sLanguage = "de", graph = FALSE, docType = "pdf", filename = NULL, verbose = TRUE, groupIDs = NULL){
 
   possible_output <- c("pdf", "html", "xls", "xlsx")
   docType <- tolower(docType)
@@ -30,11 +30,18 @@ export_statistics <- function(iSurveyID, sLanguage = "de", graph = FALSE, docTyp
   if (docType == "xlsx")
     docType <- "xls"
 
+  if (!is.null(groupIDs)) {
+    groupIDs <- as.numeric(groupIDs) %>% suppressWarnings()
+    if (any(is.na(groupIDs)))
+      stop("one or more groupIDs are not valid and must be of type integer", call. = F)
+  }
+
   x <- call_limer("export_statistics",
                   params = list("iSurveyID" = iSurveyID,
                                 "docType" = docType,
                                 "sLanguage" = sLanguage,
-                                "graph" = graph
+                                "graph" = graph,
+                                "groupIDs" = groupIDs
                                 ))
   if (is.null(x))
     stop("Could not get data for evaluation")
@@ -48,5 +55,3 @@ export_statistics <- function(iSurveyID, sLanguage = "de", graph = FALSE, docTyp
   if (verbose)
     message(filename, " saved!")
 }
-
-
