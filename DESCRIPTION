@@ -18,10 +18,11 @@ Imports:
     jsonlite,
     magrittr,
     rlang,
+    utils,
     xml2
 License: MIT + file LICENSE
 LazyData: TRUE
 URL: https://github.com/cloudyr/limer
 BugReports: https://github.com/cloudyr/limer/issues
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3
 Suggests: testthat

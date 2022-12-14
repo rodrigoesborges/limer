@@ -16,7 +16,7 @@ add_responses <- function(iSurveyID, data, verbose = FALSE) {
     stop("Data must be of type data.frame", call. = F)
 
   survey_is_active <-
-    limer::get_survey_list(sid = F) %>% dplyr::filter(.data$sid == iSurveyID) %>% dplyr::pull(.data$active) == "Y"
+    get_survey_list(sid = F) %>% dplyr::filter(.data$sid == iSurveyID) %>% dplyr::pull(.data$active) == "Y"
 
   if (!survey_is_active)
     stop(
@@ -51,9 +51,9 @@ add_responses <- function(iSurveyID, data, verbose = FALSE) {
       FUN = function(x) {
         # remove NA Values and blanks
         x <- x[!is.na(x)] %>% trimws()
-        x <- type.convert(as.list(x), as.is = TRUE)
+        x <- utils::type.convert(as.list(x), as.is = TRUE)
 
-        limer::call_limer("add_response",
+        call_limer("add_response",
                           params = list("iSurveyID" = iSurveyID,
                                         "aResponseData" = x))
       }
