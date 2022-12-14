@@ -25,6 +25,8 @@ get_response_table_columns <- function(iSurveyID, verbose = FALSE){
                     params = list("iSurveyID" = iSurveyID)
   )
 
+  if (any(res %>% unlist() == "No Data, survey table does not exist (propably yet not activated)."))
+    stop(res %>% unlist(), call. = F)
 
 
   return(res %>% unlist())
