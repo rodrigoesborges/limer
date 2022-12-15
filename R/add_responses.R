@@ -44,6 +44,20 @@ add_responses <- function(iSurveyID, data, verbose = FALSE) {
   # data <- data %>%
   #   dplyr::mutate_if(is.numeric, ~tidyr::replace_na(., 0))
 
+  convert_column_types <- function(x) {
+    if (all(!is.na(x), x != "")) {
+      if (x == "F")
+        x <- "FEMALE" # Rename for circumvent type.convert
+
+      x <- utils::type.convert(x, as.is = TRUE)
+
+      if (x == "FEMALE")
+        x <- "F" # set to original value
+    }
+
+    return(x)
+  }
+
   res <-
     apply(
       data,
@@ -51,11 +65,12 @@ add_responses <- function(iSurveyID, data, verbose = FALSE) {
       FUN = function(x) {
         # remove NA Values and blanks
         x <- x[!is.na(x)] %>% trimws()
-        x <- utils::type.convert(as.list(x), as.is = TRUE)
+
+        x <- lapply(x, FUN = function(el) convert_column_types(el) )
 
         call_limer("add_response",
-                          params = list("iSurveyID" = iSurveyID,
-                                        "aResponseData" = x))
+                   params = list("iSurveyID" = iSurveyID,
+                                 "aResponseData" = x))
       }
     )
 
