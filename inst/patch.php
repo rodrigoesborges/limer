@@ -190,4 +190,42 @@
     }
 
 
+    /**
+     * Copies a survey into a new survey with a desired ID
+     *
+     * @access public
+     *
+     * @param string  $sSessionKey  Auth credentials
+     * @param int     $iSurveyID    ID of the Survey
+     * @param int     $iDesiredSurveyId    desired ID of the new Survey
+     *
+     * @return array On success: OK
+     *               On failure: array with error information
+     */
+
+  public function copy_survey_to($sSessionKey, $iSurveyID, $iDesiredSurveyId)
+    {
+        //Yii::app()->loadHelper('admin/export');
+        Yii::app()->loadHelper('export');
+        Yii::app()->loadHelper('admin/import');
+        $iSurveyID = (int) $iSurveyID;
+        $iDesiredSurveyId = (int) $iDesiredSurveyId;
+
+        $aExcludes = array();
+        $aExcludes['dates'] = true;
+        $copysurveydata = surveyGetXMLData($iSurveyID, $aExcludes);
+
+        if ($copysurveydata) {
+
+            $aImportResults = XMLImportSurvey('', $copysurveydata, $iDesiredSurveyId = $iDesiredSurveyId);
+
+            Permission::model()->copySurveyPermissions($iSurveyID, $aImportResults['newsid']);
+            return array("status" => "ok");
+      }
+
+  }
+
+
+
+
 ?>
