@@ -26,5 +26,11 @@ get_responses <- function(iSurveyID, sDocumentType = "csv", sLanguageCode = NULL
   # print(params) # uncomment to debug the params
 
   results <- call_limer(method = "export_responses", params = params)
+
+  if (grepl("No Data, ", unlist(results))) {
+    warning(unlist(results), call. = F)
+    return(data.frame())
+  }
+
   return(base64_to_df(unlist(results)))
 }
