@@ -19,8 +19,13 @@ delete_responses <- function(iSurveyID, iResponseIDs = NULL, verbose = FALSE ) {
 
   if (is.null(iResponseIDs)) {
     iResponseIDs <- get_responses(iSurveyID)
-    # Use the first column as ID if there are answers, otherwise set ID to 1
-    iResponseIDs <- ifelse(nrow(iResponseIDs> 0), iResponseIDs %>% dplyr::pull(1), 1)
+    # Use the id column as ID if there are answers, otherwise set ID to 1
+    if (nrow(iResponseIDs) > 0){
+      iResponseIDs <- iResponseIDs$id
+    } else{
+      iResponseIDs <- 1
+    }
+
 
   }
 
