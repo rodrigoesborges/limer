@@ -15,17 +15,20 @@ get_responses(
 )
 }
 \arguments{
-\item{iSurveyID}{\dots}
+\item{iSurveyID}{string ID of the Survey}
 
-\item{sDocumentType}{\dots}
+\item{sDocumentType}{string any format available by plugins (for example :
+pdf, csv, xls, doc, json).}
 
-\item{sLanguageCode}{\dots}
+\item{sLanguageCode}{string (optional) The language to be used.}
 
-\item{sCompletionStatus}{\dots}
+\item{sCompletionStatus}{string (optional) 'complete','incomplete' or 'all'
+- defaults to 'all'.}
 
-\item{sHeadingType}{\dots}
+\item{sHeadingType}{string (optional) 'code','full' or 'abbreviated'.
+defaults to 'code'.}
 
-\item{sResponseType}{\dots}
+\item{sResponseType}{(optional)'short' or 'long'. defaults to 'short'}
 
 \item{\dots}{Further arguments to \code{\link{call_limer}}.}
 }
