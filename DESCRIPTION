@@ -18,6 +18,7 @@ Imports:
     jsonlite,
     magrittr,
     rlang,
+    stringr, 
     utils,
     xml2
 License: MIT + file LICENSE
