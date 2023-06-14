@@ -7,6 +7,7 @@
 #' @param bUnused \dots
 #' @param aAttributes \dots
 #' @export
+#' @references https://api.limesurvey.org/classes/remotecontrol_handle.html#method_list_participants
 #' @examples \dontrun{
 #' get_participants(12345, iStart=1, iLimit=10, bUnused=FALSE,
 #'                                    aAttributes=c('attribute_1','attribute_2'))
@@ -18,5 +19,8 @@ get_participants <- function(iSurveyID, iStart, iLimit, bUnused, aAttributes){
   params <- as.list(environment())
 
   results <- call_limer(method = "list_participants", params = params)
-  return(data.frame(results))
+  dfs <- lapply(results, data.frame, stringsAsFactors = FALSE)
+  results <- dplyr::bind_rows(dfs)
+
+  return(results)
 }
