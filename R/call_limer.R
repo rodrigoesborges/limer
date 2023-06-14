@@ -42,7 +42,7 @@ call_limer <-
     r <- httr::POST(
       getOption('lime_api'),
       httr::content_type_json(),
-      body = jsonlite::toJSON(body.json, auto_unbox = TRUE),
+      body = jsonlite::toJSON(body.json, auto_unbox = TRUE, force = T),
       httr::config(ssl_verifypeer = ssl_verifypeer),
       ...
     )
