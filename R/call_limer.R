@@ -47,7 +47,7 @@ call_limer <-
       ...
     )
 
-    response <- jsonlite::parse_json(httr::content(r, as = 'text', encoding = "utf-8"))$result
+    response <- jsonlite::parse_json(httr::content(r, as = 'text', encoding = "utf-8"), simplifyVector = T)$result
 
     if (is.null(response)) {
       err_msg <- jsonlite::parse_json(httr::content(r, as = 'text', encoding = 'utf-8'))$error
@@ -55,6 +55,17 @@ call_limer <-
       stop(err_msg, call. = F)
 
     } else {
+      if (any(sapply(response, function(x) class(x)) == "data.frame")) {
+        # detect all dataframe columns
+        dataframe_columns <- sapply(response, function(x) is.data.frame(x))
+
+        # get names of dataframe columns
+        dataframe_column_names <- names(response)[dataframe_columns]
+
+        response <- tidyr::unnest(response, cols = c(dataframe_column_names))
+
+      }
+
       return(response)
     }
 
