@@ -19,8 +19,6 @@ get_participants <- function(iSurveyID, iStart, iLimit, bUnused, aAttributes){
   params <- as.list(environment())
 
   results <- call_limer(method = "list_participants", params = params)
-  dfs <- lapply(results, data.frame, stringsAsFactors = FALSE)
-  results <- dplyr::bind_rows(dfs)
 
   return(results)
 }
