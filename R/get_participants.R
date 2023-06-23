@@ -19,6 +19,7 @@ get_participants <- function(iSurveyID, iStart, iLimit, bUnused, aAttributes){
   params <- as.list(environment())
 
   results <- call_limer(method = "list_participants", params = params)
-
+  if (is.list(results))
+    warning(results, call. = FALSE)
   return(results)
 }
