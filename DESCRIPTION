@@ -19,6 +19,7 @@ Imports:
     magrittr,
     rlang,
     stringr, 
+    tidyr,
     utils,
     xml2
 License: MIT + file LICENSE
