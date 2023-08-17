@@ -17,9 +17,9 @@
 get_participants <- function(iSurveyID, iStart = 1, iLimit, bUnused, aAttributes){
   # Put all the function's arguments in a list to then be passed to call_limer()
   params <- as.list(environment())
-  if (is_missing(iLimit)) {
-    iLimit <- limer::get_participants(iSurveyID, iStart = 1, iLimit = 1000000) %>%
-      dplyr::pull(tid) %>% max() %>% as.numeric()
+  if (rlang::is_missing(iLimit)) {
+    iLimit <- get_participants(iSurveyID, iStart = 1, iLimit = 1000000) %>%
+      dplyr::pull(.data$tid) %>% max() %>% as.numeric()
     params$iLimit <-  iLimit
   }
   results <- call_limer(method = "list_participants", params = params)
