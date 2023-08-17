@@ -38,9 +38,7 @@ list_participants <- function(iSurveyID, bUnused = TRUE, iStart = 1, iLimit = 10
   } else{
 
     params <- list("iSurveyID" = iSurveyID,"bUnused" = bUnused, "iLimit" = iLimit, "iStart" = iStart )
-    df <- call_limer(method = "list_participants", params = params, ...)
-    dfs <- lapply(df, data.frame, stringsAsFactors = FALSE)
-    data <- dplyr::bind_rows(dfs)
+    data <- call_limer(method = "list_participants", params = params, ...)
 
     if (length(data) == 1)
       stop(data[1,1], call. = F)
@@ -48,7 +46,7 @@ list_participants <- function(iSurveyID, bUnused = TRUE, iStart = 1, iLimit = 10
     }
 
   if (!tid)
-    data <- data[,2:5] # no tid column
+    data <- data %>% dplyr::select(-tid)
 
   colnames(data) <- gsub("participant_info.","",colnames(data))
 
