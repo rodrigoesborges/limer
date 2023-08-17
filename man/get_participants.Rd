@@ -4,7 +4,7 @@
 \alias{get_participants}
 \title{Export list of participants from a LimeSurvey survey}
 \usage{
-get_participants(iSurveyID, iStart, iLimit, bUnused, aAttributes)
+get_participants(iSurveyID, iStart = 1, iLimit, bUnused, aAttributes)
 }
 \arguments{
 \item{iSurveyID}{\dots}
@@ -26,4 +26,7 @@ get_participants(12345, iStart=1, iLimit=10, bUnused=FALSE,
                                    aAttributes=c('attribute_1','attribute_2'))
 get_participants(12345, iStart=1, iLimit=10, bUnused=FALSE, aAttributes=FALSE)
 }
+}
+\references{
+https://api.limesurvey.org/classes/remotecontrol_handle.html#method_list_participants
 }
