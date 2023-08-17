@@ -5,6 +5,8 @@
 #'
 #' @param iSurveyID integer, Id of the survey
 #' @param verbose boolean, Giving out logging info
+#' @param sHeadingType character, "full" returns the complete text of the
+#' questions, "complete" returns the code. Default = "full"
 #'
 #' @return String vector
 #' @export
@@ -13,7 +15,7 @@
 #' application/helpers/remotecontrol/remotecontrol_handle.php
 #' system.file("patch.php", package="limer")
 
-get_response_table_columns <- function(iSurveyID, verbose = FALSE){
+get_response_table_columns <- function(iSurveyID, verbose = FALSE,  sHeadingType = "full"){
 
   iSurveyID <- as.numeric(iSurveyID) %>% suppressWarnings()
 
@@ -21,7 +23,7 @@ get_response_table_columns <- function(iSurveyID, verbose = FALSE){
     stop("No valid iSurveyID passed. iSurveyID must be a six-digit number!",
          call. = F)
 
-  res <- call_limer("get_response_table_columns",
+  res <- call_limer("get_responses",
                     params = list("iSurveyID" = iSurveyID)
   )
 
@@ -29,6 +31,6 @@ get_response_table_columns <- function(iSurveyID, verbose = FALSE){
     stop(res %>% unlist(), call. = F)
 
 
-  return(res %>% unlist())
+  return(colnames(res))
 }
 
