@@ -15,18 +15,16 @@ get_survey_list <- function(sUsername = NULL, names = FALSE, sid = TRUE){
   res <- call_limer("list_surveys",
                     params = list("sUsername" = sUsername)
   )
-  if (res$status == "No surveys found") {
+  if ("status" %in% colnames(res) && res$status == "No surveys found") {
     data <- data.frame(sid = NA, surveyls_title = NA, startdate = NA, expires = NA, active = NA )
     warning("no surveys found!", call. = F)
-  } else{
-    data <- data.table::rbindlist(res) %>% suppressWarnings() %>% as.data.frame()
   }
 
   if (names)
-    return(data$surveyls_title)
+    return(res$surveyls_title)
 
   if (sid)
-    return(data$sid)
+    return(res$sid)
 
   return(data)
 }
