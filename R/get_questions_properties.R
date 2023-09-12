@@ -18,6 +18,6 @@ get_questions_properties <- function(iSurveyID, sUsername = NULL, verbose = FALS
   }
 
   res <- limer::call_limer("list_questions", params = list("iSurveyID" = iSurveyID))
-  return(df)
+  return(res)
 }
 
