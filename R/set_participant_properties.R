@@ -1,7 +1,7 @@
 #' set_participant_properties
 #'
-#' Allow to set properties about a specific participant, only one particpant can
-#' be updated.
+#' Allow to set properties about a specific participant, only one
+#' participant can be updated.
 #'
 #' @param iSurveyID integer, ID of the Survey to insert responses
 #' @param aTokenQueryProperties integer, tid of the user
@@ -17,7 +17,7 @@ set_participant_properties <- function(iSurveyID, aTokenQueryProperties,
       max_id <- max(as.numeric(aTokenQueryProperties))
 
       aTokenIDs_in_survey <- get_participants(iSurveyID, iStart = 1, iLimit = max_id) %>%
-        dplyr::pull(tid)
+        dplyr::pull(.data$tid)
 
       if (!all(aTokenQueryProperties %>% unlist() %in% aTokenIDs_in_survey))
         warning("some Tid in the aTokenData not found in participants table", call. = F)
