@@ -20,13 +20,17 @@ delete_participants <-
            chunksize = 5000) {
     options(scipen = 999)
 
-
-    answer <- readline(prompt = glue::glue("Delete all participants up to the maximum id number `{max_id}`. Proceed?[Y/N]")) %>% tolower()
+    cat(glue::glue("Delete all participants up to the maximum id number `{max_id}`. Proceed?[Y/N]"))
+    answer <- readline() %>% tolower()
     if (tolower(answer) != "y")
       return("end without deleting participants")
 
     if (is.null(aTokenIDs)) {
       aTokenIDs <- limer::get_participants(iSurveyID, iStart = 1, iLimit = max_id) %>%
+        suppressWarnings()
+      if (class(aTokenIDs)[1] == "list")
+        return(warning(aTokenIDs$status, call. = F) %>% unlist())
+      aTokenIDs <- aTokenIDs %>%
         dplyr::pull(.data$tid) %>% as.list()
     } else {
       aTokenIDs <- as.list(aTokenIDs)
