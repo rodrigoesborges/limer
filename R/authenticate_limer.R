@@ -5,7 +5,7 @@
 #' LIME_API_URL are set in the system environment in .Renviron.
 #'
 #' @param ssl_verifypeer boolean, httr::config parameter for API call
-#' @return
+#' @return message
 #' @export
 #'
 
