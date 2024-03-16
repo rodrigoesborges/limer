@@ -18,7 +18,7 @@ get_session_key <- function(username = getOption('lime_username'),
   body.json = list(
     method = "get_session_key",
     id = "1",
-    params = list(admin = username,
+    params = list(username = username,
                   password = password)
   )
 
