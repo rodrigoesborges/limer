@@ -13,7 +13,7 @@
 #' get_uploaded_files(12345, iStart=1, iLimit=10, bUnused=FALSE, aAttributes=FALSE)
 #' }
 
-get_uploaded_files <- function(iSurveyID,zzdownloadpath){
+get_uploaded_files <- function(iSurveyID,sToken=session_cache$session,zzdownloadpath){
   # Put all the function's arguments in a list to then be passed to call_limer()
   params <- as.list(environment())
   params <- params[-length(params)]
