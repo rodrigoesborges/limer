@@ -1,11 +1,11 @@
 Package: limer
 Type: Package
 Title: A LimeSurvey R Client
-Version: 0.1
-Date: 2022-11-25
+Version: 0.1.1
+Date: 2024-03-16
 Encoding: UTF-8
 Author: Andrew Heiss
-Contributor: Ulrich Lang
+Contributor: Ulrich Lang, Rodrigo Borges
 Maintainer: Andrew Heiss <andrew@andrewheiss.com>
 Description: Provides access to LimeSurvey's RemoteControl 2 API, allowing you 
   to collect and analyze survey data in a simple, reproducible workflow.  
