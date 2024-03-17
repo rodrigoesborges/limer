@@ -4,7 +4,7 @@
 \alias{get_uploaded_files}
 \title{Obtain all uploaded files for all responses}
 \usage{
-get_uploaded_files(iSurveyID, zzdownloadpath)
+get_uploaded_files(iSurveyID, responseId, sToken = "", downloadpath = ".")
 }
 \arguments{
 \item{iSurveyID}{\dots}

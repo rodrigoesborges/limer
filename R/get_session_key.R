@@ -17,7 +17,7 @@ get_session_key <- function(username = getOption('lime_username'),
                             ssl_verifypeer = FALSE) {
   body.json = list(
     method = "get_session_key",
-    id = "1",
+    id = " ",
     params = list(username = username,
                   password = password)
   )
